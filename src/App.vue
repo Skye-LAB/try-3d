@@ -1,21 +1,37 @@
-<script setup>
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Hello Vue 3 + Vite" />
+  <Renderer ref="renderer">
+    <Camera :position="{ z: 10 }" />
+    <Scene>
+      <PointLight :position="{ y: 50, z: 50 }" />
+      <Box ref="box">
+        <LambertMaterial />
+      </Box>
+    </Scene>
+  </Renderer>
 </template>
+<script>
+import { reactive, ref } from "@vue/reactivity";
+import { onMounted } from "@vue/runtime-core";
+export default {
+  setup() {
+    const renderer = ref();
+    const box = ref();
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+    const _ = reactive({
+      renderer,
+      box,
+    });
+
+    onMounted(() => {
+      _.renderer.onBeforeRender(() => {
+        _.box.mesh.rotation.x += 0.1;
+      });
+    });
+
+    return {
+      renderer,
+      box,
+    };
+  },
+};
+</script>
