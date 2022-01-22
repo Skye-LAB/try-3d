@@ -1,10 +1,11 @@
 <template>
   <Card>
     <template v-slot:card-img>
-      <Renderer ref="renderer">
-        <Camera :position="{ z: 10 }" />
-        <Scene>
-          <PointLight :position="{ y: 50, z: 50 }" />
+      <Renderer ref="renderer" antialias orbit-ctrl>
+        <Camera :position="{ z: 2}" />
+        <Scene background="#fff">
+          <AmbientLight/>
+          <PointLight color="white" :intensity="10" :position="{ x: 100, y: 1000, z: 40 }" />
           <GltfModel src="./scene.gltf"/>
         </Scene>
       </Renderer>
